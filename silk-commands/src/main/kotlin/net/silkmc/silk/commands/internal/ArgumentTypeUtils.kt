@@ -2,7 +2,6 @@ package net.silkmc.silk.commands.internal
 
 import com.mojang.brigadier.arguments.*
 import net.minecraft.ChatFormatting
-import net.minecraft.commands.CommandBuildContext
 import net.minecraft.commands.arguments.*
 import net.minecraft.commands.arguments.blocks.BlockInput
 import net.minecraft.commands.arguments.blocks.BlockStateArgument
@@ -28,7 +27,7 @@ object ArgumentTypeUtils {
      *
      * @param context the context which provides access to registries
      */
-    inline fun <reified T> fromReifiedType(context: CommandBuildContext): ArgumentType<T> {
+    inline fun <reified T> fromReifiedType(): ArgumentType<T> {
         val type = when (T::class) {
             Boolean::class -> BoolArgumentType.bool()
             Int::class -> IntegerArgumentType.integer()
@@ -40,11 +39,11 @@ object ArgumentTypeUtils {
             UUID::class -> UuidArgument.uuid()
 
             Coordinates::class -> BlockPosArgument.blockPos()
-            BlockInput::class -> BlockStateArgument.block(context)
+            BlockInput::class -> BlockStateArgument.block()
             ChatFormatting::class -> ColorArgument.color()
             Enchantment::class -> ItemEnchantmentArgument.enchantment()
             ResourceLocation::class -> ResourceLocationArgument.id()
-            ItemInput::class -> ItemArgument.item(context)
+            ItemInput::class -> ItemArgument.item()
             CompoundTag::class -> CompoundTagArgument.compoundTag()
             Tag::class -> NbtTagArgument.nbtTag()
             ParticleOptions::class -> ParticleArgument.particle()

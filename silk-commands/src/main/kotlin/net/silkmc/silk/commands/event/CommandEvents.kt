@@ -1,9 +1,9 @@
 package net.silkmc.silk.commands.event
 
 import com.mojang.brigadier.CommandDispatcher
-import net.minecraft.commands.CommandBuildContext
 import net.minecraft.commands.CommandSourceStack
 import net.minecraft.commands.Commands.CommandSelection
+import net.minecraft.core.RegistryAccess
 import net.silkmc.silk.commands.ClientCommandSourceStack
 import net.silkmc.silk.core.annotations.ExperimentalSilkApi
 import net.silkmc.silk.core.event.Event
@@ -20,13 +20,12 @@ object CommandEvents {
 
     class RegisterEvent(
         val dispatcher: CommandDispatcher<CommandSourceStack>,
-        val context: CommandBuildContext,
         val selection: CommandSelection,
     )
 
     class RegisterClientEvent(
         val dispatcher: CommandDispatcher<ClientCommandSourceStack>,
-        val context: CommandBuildContext,
+        val registry: RegistryAccess.Frozen,
     )
 
     /**

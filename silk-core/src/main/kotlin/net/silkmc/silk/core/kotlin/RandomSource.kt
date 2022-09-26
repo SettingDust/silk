@@ -1,8 +1,8 @@
 package net.silkmc.silk.core.kotlin
 
-import net.minecraft.util.RandomSource
 import net.minecraft.world.level.levelgen.BitRandomSource
 import net.minecraft.world.level.levelgen.PositionalRandomFactory
+import net.minecraft.world.level.levelgen.RandomSource
 import net.silkmc.silk.core.annotations.ExperimentalSilkApi
 import kotlin.random.Random
 import kotlin.random.asJavaRandom

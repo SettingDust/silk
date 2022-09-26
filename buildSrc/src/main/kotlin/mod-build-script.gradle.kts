@@ -24,7 +24,7 @@ repositories {
 dependencies {
     minecraft("com.mojang:minecraft:$minecraftVersion")
     mappings(loom.layered {
-        parchment("org.parchmentmc.data:parchment-1.19.2:2022.09.18@zip")
+        parchment("org.parchmentmc.data:parchment-1.18.2:2022.09.04@zip")
         officialMojangMappings()
     })
 

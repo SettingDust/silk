@@ -22,7 +22,7 @@ class LiteralTextBuilder(
     private val inheritStyle: Boolean
 ) {
     constructor(text: String, parentStyle: Style, inheritStyle: Boolean) :
-            this(Component.literal(text), parentStyle, inheritStyle)
+        this(text.literal, parentStyle, inheritStyle)
 
     var bold: Boolean? = null
     var italic: Boolean? = null
@@ -59,7 +59,7 @@ class LiteralTextBuilder(
             .withHoverEvent(hoverEvent)
             .let { if (inheritStyle) it.applyTo(parentStyle) else it }
 
-    val siblingText: MutableComponent = Component.literal("")
+    val siblingText: MutableComponent = "".literal
 
     /**
      * Append text to the parent.
@@ -73,7 +73,9 @@ class LiteralTextBuilder(
         inheritStyle: Boolean = true,
         builder: LiteralTextBuilder.() -> Unit = { }
     ) {
-        siblingText.append(LiteralTextBuilder(text, currentStyle, inheritStyle).apply(builder).build())
+        siblingText.append(
+            LiteralTextBuilder(text, currentStyle, inheritStyle).apply(builder).build()
+        )
     }
 
     /**
@@ -89,7 +91,9 @@ class LiteralTextBuilder(
         builder: LiteralTextBuilder.() -> Unit = { }
     ) {
         if (text is MutableComponent) {
-            siblingText.append(LiteralTextBuilder(text, currentStyle, inheritStyle).apply(builder).build())
+            siblingText.append(
+                LiteralTextBuilder(text, currentStyle, inheritStyle).apply(builder).build()
+            )
         } else {
             siblingText.append(text)
         }
@@ -99,7 +103,7 @@ class LiteralTextBuilder(
      * Adds a line break.
      */
     fun newLine() {
-        siblingText.append(Component.literal("\n"))
+        siblingText.append(CommonComponents.NEW_LINE)
     }
 
     /**
@@ -112,7 +116,8 @@ class LiteralTextBuilder(
 
     fun build() = text.apply {
         style = currentStyle
-        if (siblingText.siblings.isNotEmpty())
+        if (siblingText.siblings.isNotEmpty()) {
             append(siblingText)
+        }
     }
 }

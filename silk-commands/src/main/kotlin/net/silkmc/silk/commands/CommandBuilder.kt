@@ -18,7 +18,6 @@ import kotlinx.coroutines.future.asCompletableFuture
 import kotlinx.coroutines.launch
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
-import net.minecraft.commands.CommandBuildContext
 import net.minecraft.commands.CommandSourceStack
 import net.minecraft.commands.SharedSuggestionProvider
 import net.silkmc.silk.commands.DslAnnotations.NodeLevel.RunsDsl
@@ -42,7 +41,7 @@ typealias ArgumentResolver<S, T> = CommandContext<S>.() -> T
 typealias SimpleArgumentBuilder<Source, T> = ArgumentCommandBuilder<Source, T>.(argument: ArgumentResolver<Source, T>) -> Unit
 
 @InternalSilkApi
-typealias BrigadierBuilder<Builder> = Builder.(context: CommandBuildContext) -> Unit
+typealias BrigadierBuilder<Builder> = Builder.() -> Unit
 
 @NodeDsl
 abstract class CommandBuilder<Source, Builder, Node>
@@ -164,7 +163,7 @@ abstract class CommandBuilder<Source, Builder, Node>
     @NodeDsl
     inline fun <reified T> argument(
         name: String,
-        noinline typeProvider: (CommandBuildContext) -> ArgumentType<T>,
+        noinline typeProvider: () -> ArgumentType<T>,
         builder: SimpleArgumentBuilder<Source, T> = {},
     ) = ArgumentCommandBuilder<Source, T>(name, typeProvider)
         .apply { builder { getArgument(name, T::class.java) } }
@@ -199,7 +198,7 @@ abstract class CommandBuilder<Source, Builder, Node>
      */
     @NodeDsl
     inline fun <reified T> argument(name: String, builder: SimpleArgumentBuilder<Source, T> = {}) =
-        ArgumentCommandBuilder<Source, T>(name) { ArgumentTypeUtils.fromReifiedType(it) }
+        ArgumentCommandBuilder<Source, T>(name) { ArgumentTypeUtils.fromReifiedType() }
             .apply { builder { getArgument(name, T::class.java) } }
             .also { children += it }
 
@@ -235,23 +234,23 @@ abstract class CommandBuilder<Source, Builder, Node>
      * This function allows you to access the regular Brigadier builder. The type of
      * `this` in its context will equal the type of [Builder].
      */
-    fun brigadier(block: (@NodeDsl Builder).(context: CommandBuildContext) -> Unit) = this.also {
+    fun brigadier(block: (@NodeDsl Builder).() -> Unit) = this.also {
         brigadierBuilders += block
     }
 
-    protected abstract fun createBuilder(context: CommandBuildContext): Builder
+    protected abstract fun createBuilder(): Builder
 
     /**
      * Converts this Kotlin command builder abstraction to an [ArgumentBuilder] of Brigadier.
      */
     @InternalSilkApi
-    open fun toBrigadier(context: CommandBuildContext): List<Node> {
-        val builder = createBuilder(context)
+    open fun toBrigadier(): List<Node> {
+        val builder = createBuilder()
 
-        brigadierBuilders.forEach { it(builder, context) }
+        brigadierBuilders.forEach { it(builder) }
 
         children.forEach { child ->
-            child.toBrigadier(context).forEach {
+            child.toBrigadier().forEach {
                 @Suppress("UNCHECKED_CAST")
                 builder.then(it as CommandNode<Source>)
             }
@@ -266,7 +265,7 @@ class LiteralCommandBuilder<Source : SharedSuggestionProvider>(
     private val name: String,
 ) : CommandBuilder<Source, LiteralArgumentBuilder<Source>, LiteralCommandNode<Source>>() {
 
-    override fun createBuilder(context: CommandBuildContext): LiteralArgumentBuilder<Source> =
+    override fun createBuilder(): LiteralArgumentBuilder<Source> =
         LiteralArgumentBuilder.literal(name)
 
     private val aliases = mutableListOf<String>()
@@ -280,8 +279,8 @@ class LiteralCommandBuilder<Source : SharedSuggestionProvider>(
         aliases += name
     }
 
-    override fun toBrigadier(context: CommandBuildContext): List<LiteralCommandNode<Source>> {
-        return super.toBrigadier(context).let { mainNodes ->
+    override fun toBrigadier(): List<LiteralCommandNode<Source>> {
+        return super.toBrigadier().let { mainNodes ->
             if (aliases.isEmpty() || mainNodes.size != 1) mainNodes else {
                 val mainNode = mainNodes.single()
                 mainNodes + aliases.map { alias ->
@@ -309,11 +308,11 @@ class LiteralCommandBuilder<Source : SharedSuggestionProvider>(
 
 class ArgumentCommandBuilder<Source : SharedSuggestionProvider, T>(
     private val name: String,
-    private val typeProvider: (CommandBuildContext) -> ArgumentType<T>,
+    private val typeProvider: () -> ArgumentType<T>,
 ) : CommandBuilder<Source, RequiredArgumentBuilder<Source, T>, ArgumentCommandNode<Source, T>>() {
 
-    override fun createBuilder(context: CommandBuildContext): RequiredArgumentBuilder<Source, T> =
-        RequiredArgumentBuilder.argument(name, typeProvider(context))
+    override fun createBuilder(): RequiredArgumentBuilder<Source, T> =
+        RequiredArgumentBuilder.argument(name, typeProvider())
 
     @PublishedApi
     internal inline fun suggests(

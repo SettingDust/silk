@@ -19,5 +19,5 @@ fun MinecraftServer.executeCommand(command: String) {
  */
 fun MinecraftServer.executeCommand(command: String, source: CommandSourceStack) {
     val parsed = commands.dispatcher.parse(command, source)
-    commands.performCommand(parsed, command)
+    commands.performCommand(parsed.context.source, command)
 }

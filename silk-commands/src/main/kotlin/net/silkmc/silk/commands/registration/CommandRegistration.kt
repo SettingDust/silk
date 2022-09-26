@@ -23,7 +23,7 @@ fun LiteralArgumentBuilder<CommandSourceStack>.setupRegistrationCallback() {
  */
 fun RegistrableCommand<CommandSourceStack>.setupRegistrationCallback() {
     Events.Command.register.listen { event ->
-        commandBuilder.toBrigadier(event.context).forEach {
+        commandBuilder.toBrigadier().forEach {
             event.dispatcher.root.addChild(it)
         }
     }
@@ -44,7 +44,7 @@ fun LiteralArgumentBuilder<ClientCommandSourceStack>.setupRegistrationCallback()
 @JvmName("setupRegistrationCallbackClient")
 fun RegistrableCommand<ClientCommandSourceStack>.setupRegistrationCallback() {
     Events.Command.registerClient.listen { event ->
-        commandBuilder.toBrigadier(event.context).forEach {
+        commandBuilder.toBrigadier().forEach {
             event.dispatcher.root.addChild(it)
         }
     }

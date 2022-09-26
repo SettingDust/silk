@@ -1,12 +1,14 @@
 package net.silkmc.silk.commands
 
 import net.minecraft.ChatFormatting
+import net.minecraft.Util
 import net.minecraft.client.Minecraft
 import net.minecraft.client.multiplayer.ClientLevel
 import net.minecraft.client.multiplayer.ClientPacketListener
 import net.minecraft.client.multiplayer.ClientSuggestionProvider
 import net.minecraft.client.player.LocalPlayer
 import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.TextComponent
 import net.silkmc.silk.commands.mixin.client.ClientSuggestionProviderAccessor
 
 typealias ClientCommandSourceStack = ClientSuggestionProvider
@@ -25,12 +27,12 @@ val ClientCommandSourceStack.level: ClientLevel
 
 fun ClientCommandSourceStack.sendSuccess(message: Component) {
     if (player.acceptsSuccess()) {
-        player.sendSystemMessage(message)
+        player.sendMessage(message, Util.NIL_UUID)
     }
 }
 
 fun ClientCommandSourceStack.sendFailure(message: Component) {
     if (player.acceptsFailure()) {
-        player.sendSystemMessage(Component.empty().append(message).withStyle(ChatFormatting.RED))
+        player.sendMessage(TextComponent("").append(message).withStyle(ChatFormatting.RED), Util.NIL_UUID)
     }
 }

@@ -4,7 +4,6 @@ import com.mojang.brigadier.tree.ArgumentCommandNode
 import com.mojang.brigadier.tree.CommandNode
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import io.mockk.mockk
 import net.minecraft.commands.SharedSuggestionProvider
 import net.silkmc.silk.commands.RegistrableCommand
 import net.silkmc.silk.commands.command
@@ -87,10 +86,15 @@ class CommandStructureTest : FunSpec({
 })
 
 fun RegistrableCommand<*>.extract() =
-    commandBuilder.toBrigadier(mockk()).first()
+    commandBuilder.toBrigadier().first()
 
-fun <S : SharedSuggestionProvider> printCommand(commandNode: CommandNode<S>, depth: Int = 0, stringBuilder: StringBuilder = StringBuilder()): String {
-    fun printWithDepth(message: Any) = println((" ".repeat(depth * 2) + message).also { stringBuilder.appendLine(it) })
+fun <S : SharedSuggestionProvider> printCommand(
+    commandNode: CommandNode<S>,
+    depth: Int = 0,
+    stringBuilder: StringBuilder = StringBuilder()
+): String {
+    fun printWithDepth(message: Any) =
+        println((" ".repeat(depth * 2) + message).also { stringBuilder.appendLine(it) })
 
     printWithDepth("-> ${commandNode.name}")
     commandNode.command?.let { printWithDepth(" |- has executor") }

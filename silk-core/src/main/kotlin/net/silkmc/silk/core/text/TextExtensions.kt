@@ -1,5 +1,7 @@
 package net.silkmc.silk.core.text
 
+import net.minecraft.Util
+import net.minecraft.network.chat.ChatType
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
 import net.minecraft.server.MinecraftServer
@@ -9,7 +11,7 @@ import org.apache.commons.lang3.text.WordUtils
 /**
  * Converts this string to a [LiteralText] instance.
  */
-val String.literal: MutableComponent get() = Component.literal(this)
+val String.literal: MutableComponent get() = Component.nullToEmpty(this) as MutableComponent
 
 /**
  * Returns a list of [Component] elements which all do not exceed
@@ -24,8 +26,9 @@ inline fun String.literalLines(
     width: Int = 40,
     cutLongWords: Boolean = true,
     lineBuilder: (line: String) -> Component = { it.literal }
-): List<Component> = WordUtils.wrap(this, width, System.lineSeparator(), cutLongWords).split(System.lineSeparator())
-    .map(lineBuilder)
+): List<Component> =
+    WordUtils.wrap(this, width, System.lineSeparator(), cutLongWords).split(System.lineSeparator())
+        .map(lineBuilder)
 
 /**
  * Sends the given [Component] to the player.
@@ -50,7 +53,10 @@ inline fun Player.sendText(baseText: String = "", builder: LiteralTextBuilder.()
  *
  * @see [literalText]
  */
-inline fun MinecraftServer.broadcastText(baseText: String = "", builder: LiteralTextBuilder.() -> Unit= { }) {
+inline fun MinecraftServer.broadcastText(
+    baseText: String = "",
+    builder: LiteralTextBuilder.() -> Unit = { }
+) {
     broadcastText(literalText(baseText, builder))
 }
 
@@ -58,7 +64,7 @@ inline fun MinecraftServer.broadcastText(baseText: String = "", builder: Literal
  * Sends the given [Component] to each player on the server.
  */
 fun MinecraftServer.broadcastText(text: Component) {
-    playerList.broadcastSystemMessage(text, false)
+    playerList.broadcastMessage(text, ChatType.SYSTEM, Util.NIL_UUID)
 }
 
 @Deprecated(

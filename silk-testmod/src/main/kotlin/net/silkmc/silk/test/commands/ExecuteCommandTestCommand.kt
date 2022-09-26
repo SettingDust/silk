@@ -1,5 +1,6 @@
 package net.silkmc.silk.test.commands
 
+import net.minecraft.server.level.ServerPlayer
 import net.silkmc.silk.core.entity.executeCommand
 import net.silkmc.silk.core.server.executeCommand
 
@@ -12,7 +13,7 @@ val executeCommandTestCommand = testCommand("execute_command") {
     }
     literal("player") {
         runs {
-            val player = this.source.player
+            val player = this.source.entity as? ServerPlayer
             player?.executeCommand("summon pig")
         }
     }

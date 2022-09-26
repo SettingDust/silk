@@ -2,7 +2,6 @@ package net.silkmc.silk.commands.mixin.client;
 
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.protocol.game.ClientboundCommandsPacket;
 import net.minecraft.network.protocol.game.ClientboundLoginPacket;
@@ -24,7 +23,7 @@ public class MixinClientPacketListener {
         at = @At("RETURN")
     )
     private void onLogin(ClientboundLoginPacket packet, CallbackInfo ci) {
-        ClientCommandHandler.INSTANCE.refreshDispatcher(new CommandBuildContext(packet.registryHolder()));
+        ClientCommandHandler.INSTANCE.refreshDispatcher(packet.registryHolder());
     }
 
     @Inject(

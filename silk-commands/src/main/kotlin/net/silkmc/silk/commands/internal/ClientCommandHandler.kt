@@ -6,8 +6,8 @@ import com.mojang.brigadier.tree.CommandNode
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.client.player.LocalPlayer
-import net.minecraft.commands.CommandBuildContext
 import net.minecraft.commands.SharedSuggestionProvider
+import net.minecraft.core.RegistryAccess
 import net.minecraft.network.chat.ComponentUtils
 import net.silkmc.silk.commands.ClientCommandSourceStack
 import net.silkmc.silk.commands.event.CommandEvents
@@ -20,13 +20,13 @@ import net.silkmc.silk.core.logging.logWarning
 object ClientCommandHandler {
     private var currentDispatcher: CommandDispatcher<ClientCommandSourceStack>? = null
 
-    fun refreshDispatcher(context: CommandBuildContext) {
+    fun refreshDispatcher(registry: RegistryAccess.Frozen) {
         val dispatcher = CommandDispatcher<ClientCommandSourceStack>()
         currentDispatcher = dispatcher
 
-        CommandEvents.registerClient.invoke(CommandEvents.RegisterClientEvent(dispatcher, context))
+        CommandEvents.registerClient.invoke(CommandEvents.RegisterClientEvent(dispatcher, registry))
         dispatcher.findAmbiguities { _, child, sibling, inputs ->
-            logWarning("Ambiguity between arguments ${dispatcher.getPath(child)} and ${dispatcher.getPath(sibling)} with inputs: $inputs");
+            logWarning("Ambiguity between arguments ${dispatcher.getPath(child)} and ${dispatcher.getPath(sibling)} with inputs: $inputs")
         }
     }
 
