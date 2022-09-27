@@ -10,7 +10,7 @@ object BuildConstants {
 
     const val curseforgeId = "447425"
     const val modrinthId = "aTaCgKLW"
-    const val githubRepo = "SilkMC/silk"
+    const val githubRepo = "SettingDust/silk"
 
     val authors = listOf("jakobkmar", "_F0X")
 

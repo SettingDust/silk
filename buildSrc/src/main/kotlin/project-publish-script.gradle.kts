@@ -10,19 +10,6 @@ plugins {
 }
 
 publishing {
-    repositories {
-        maven {
-            name = "ossrh"
-            credentials(PasswordCredentials::class)
-            setUrl(
-                if (!isSnapshot)
-                    "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2"
-                else
-                    "https://s01.oss.sonatype.org/content/repositories/snapshots"
-            )
-        }
-    }
-
     publications {
         register<MavenPublication>(project.name) {
             from(components["java"])
@@ -51,11 +38,6 @@ publishing {
                 }
 
                 url.set("https://github.com/${githubRepo}")
-
-                scm {
-                    connection.set("scm:git:git://github.com/${githubRepo}.git")
-                    url.set("https://github.com/${githubRepo}/tree/main")
-                }
             }
         }
     }
