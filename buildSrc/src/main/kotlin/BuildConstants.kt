@@ -19,6 +19,7 @@ object BuildConstants {
     // check these values here: https://axay.net/mcdev
     const val minecraftVersion = "1.18.2"
     const val quiltMappingsVersion = "${minecraftVersion}+build.24:v2"
+    const val parchmentMappingsVersion = "${minecraftVersion}:2022.09.04"
     const val fabricLoaderVersion = "0.14.9"
     const val fabricApiVersion = "0.59.0+1.18.2"
     const val fabricLanguageKotlinVersion = "1.8.3+kotlin.1.7.10"
