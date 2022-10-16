@@ -13,7 +13,7 @@ import net.minecraft.nbt.StringTag
 import net.minecraft.nbt.Tag
 import net.silkmc.silk.nbt.serialization.Nbt
 import net.silkmc.silk.nbt.serialization.internal.*
-import net.silkmc.silk.nbt.toNbt
+import net.silkmc.silk.nbt.toTag
 
 @ExperimentalSerializationApi
 abstract class NbtTagEncoder(protected val nbt: Nbt) : AbstractEncoder() {
@@ -66,39 +66,39 @@ abstract class NbtTagEncoder(protected val nbt: Nbt) : AbstractEncoder() {
     }
 
     override fun encodeBoolean(value: Boolean) {
-        encodeMaybeNullable(value.toNbt())
+        encodeMaybeNullable(value.toTag())
     }
 
     override fun encodeByte(value: Byte) {
-        encodeMaybeNullable(value.toNbt())
+        encodeMaybeNullable(value.toTag())
     }
 
     override fun encodeShort(value: Short) {
-        encodeMaybeNullable(value.toNbt())
+        encodeMaybeNullable(value.toTag())
     }
 
     override fun encodeInt(value: Int) {
-        encodeMaybeNullable(value.toNbt())
+        encodeMaybeNullable(value.toTag())
     }
 
     override fun encodeLong(value: Long) {
-        encodeMaybeNullable(value.toNbt())
+        encodeMaybeNullable(value.toTag())
     }
 
     override fun encodeFloat(value: Float) {
-        encodeMaybeNullable(value.toNbt())
+        encodeMaybeNullable(value.toTag())
     }
 
     override fun encodeDouble(value: Double) {
-        encodeMaybeNullable(value.toNbt())
+        encodeMaybeNullable(value.toTag())
     }
 
     override fun encodeChar(value: Char) {
-        encodeMaybeNullable(value.toNbt())
+        encodeMaybeNullable(value.toTag())
     }
 
     override fun encodeString(value: String) {
-        encodeMaybeNullable(value.toNbt())
+        encodeMaybeNullable(value.toTag())
     }
 
     override fun encodeEnum(enumDescriptor: SerialDescriptor, index: Int) {
@@ -106,15 +106,15 @@ abstract class NbtTagEncoder(protected val nbt: Nbt) : AbstractEncoder() {
     }
 
     private fun encodeByteArray(value: ByteArray) {
-        encodeMaybeNullable(value.toNbt())
+        encodeMaybeNullable(value.toTag())
     }
 
     private fun encodeIntArray(value: IntArray) {
-        encodeMaybeNullable(value.toNbt())
+        encodeMaybeNullable(value.toTag())
     }
 
     private fun encodeLongArray(value: LongArray) {
-        encodeMaybeNullable(value.toNbt())
+        encodeMaybeNullable(value.toTag())
     }
 }
 
