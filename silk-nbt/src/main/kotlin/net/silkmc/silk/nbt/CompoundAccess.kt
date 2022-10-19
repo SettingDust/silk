@@ -1,8 +1,9 @@
-@file:Suppress("FINAL_UPPER_BOUND", "unused")
+@file:Suppress("unused")
 
 package net.silkmc.silk.nbt
 
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.nbt.Tag
 
 operator fun CompoundTag.set(key: String, value: Boolean) = putBoolean(key, value)
 
@@ -30,3 +31,5 @@ operator fun CompoundTag.set(key: String, value: LongArray) = putLongArray(key, 
 operator fun CompoundTag.set(key: String, value: Array<Long>) = putLongArray(key, value.toLongArray())
 @JvmName("setLongList")
 operator fun CompoundTag.set(key: String, value: List<Long>) = putLongArray(key, value)
+
+operator fun CompoundTag.set(key: String, value: Tag) = put(key, value)

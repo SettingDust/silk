@@ -51,7 +51,7 @@ class NbtEncodingTest : StringSpec({
         with(Nbt.encodeToNbtElement<Int?>(5)) {
             shouldBeInstanceOf<ListTag>()
             shouldHaveSize(1)
-            this[0] shouldBe 5.toNbt()
+            this[0] shouldBe 5.toTag()
         }
     }
 

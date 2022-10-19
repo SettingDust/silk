@@ -8,6 +8,7 @@ import net.silkmc.silk.nbt.toNbt
 /**
  * Build an NBT compound.
  */
+@Deprecated("Refactored", ReplaceWith("compoundTag { \n }"))
 inline fun nbtCompound(build: NbtCompoundBuilder.() -> Unit) =
     NbtCompoundBuilder().apply(build).build()
 
@@ -16,9 +17,11 @@ inline fun nbtCompound(build: NbtCompoundBuilder.() -> Unit) =
  *
  * @see NbtListBuilder
  */
+@Deprecated("Refactored", ReplaceWith("listTag { \n }"))
 inline fun nbtList(build: NbtListBuilder.() -> Unit) =
     NbtListBuilder().apply(build).build()
 
+@Deprecated("Refactored", ReplaceWith("CompoundTagBuilderScope"))
 class NbtCompoundBuilder {
     private val compound = CompoundTag()
 
@@ -122,6 +125,7 @@ class NbtCompoundBuilder {
  * elements are required to have the same type, otherwise an
  * [UnsupportedOperationException] is thrown.
  */
+@Deprecated("Refactored", ReplaceWith("ListTagBuilderScope"))
 class NbtListBuilder {
     private val list = ListTag()
 

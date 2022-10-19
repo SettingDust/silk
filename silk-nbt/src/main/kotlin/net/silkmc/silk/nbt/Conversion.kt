@@ -1,24 +1,52 @@
 package net.silkmc.silk.nbt
 
 import net.minecraft.nbt.*
+import net.silkmc.silk.nbt.dsl.*
 import java.util.*
 
-fun Boolean.toNbt(): ByteTag = ByteTag.valueOf(this)
-fun Byte.toNbt(): ByteTag = ByteTag.valueOf(this)
-fun Short.toNbt(): ShortTag = ShortTag.valueOf(this)
-fun Int.toNbt(): IntTag = IntTag.valueOf(this)
-fun Long.toNbt(): LongTag = LongTag.valueOf(this)
-fun Float.toNbt(): FloatTag = FloatTag.valueOf(this)
-fun Double.toNbt(): DoubleTag = DoubleTag.valueOf(this)
-fun Char.toNbt(): IntTag = IntTag.valueOf(code)
-fun String.toNbt(): StringTag = StringTag.valueOf(this)
+fun Boolean.toTag(): ByteTag = ByteTag(this)
+fun Byte.toTag(): ByteTag = ByteTag(this)
+fun Short.toTag(): ShortTag = ShortTag(this)
+fun Int.toTag(): IntTag = IntTag(this)
+fun Long.toTag(): LongTag = LongTag(this)
+fun Float.toTag(): FloatTag = FloatTag(this)
+fun Double.toTag(): DoubleTag = DoubleTag(this)
+fun Char.toTag(): IntTag = IntTag(code)
+fun String.toTag(): StringTag = StringTag(this)
 
-fun ByteArray.toNbt() = ByteArrayTag(this)
-fun List<Byte>.toNbt() = ByteArrayTag(this)
-fun IntArray.toNbt() = IntArrayTag(this)
-fun List<Int>.toNbt() = IntArrayTag(this)
-fun LongArray.toNbt() = LongArrayTag(this)
-fun List<Long>.toNbt() = LongArrayTag(this)
-fun <T : Tag> List<T>.toNbt() = ListTag().also { it.addAll(this) }
+fun ByteArray.toTag() = ByteArrayTag(this)
+fun List<Byte>.toTag() = ByteArrayTag(this)
+fun IntArray.toTag() = IntArrayTag(this)
+fun List<Int>.toTag() = IntArrayTag(this)
+fun LongArray.toTag() = LongArrayTag(this)
+fun List<Long>.toTag() = LongArrayTag(this)
 
-fun UUID.toNbt(): IntArrayTag = NbtUtils.createUUID(this)
+fun ByteArray.toListTag() = map(Byte::toTag).toTag()
+
+@JvmName("toByteListTag")
+fun List<Byte>.toListTag() = map(Byte::toTag).toTag()
+fun IntArray.toListTag() = map(Int::toTag).toTag()
+
+@JvmName("toIntListTag")
+fun List<Int>.toListTag() = map(Int::toTag).toTag()
+fun LongArray.toListTag() = map(Long::toTag).toTag()
+
+@JvmName("toLongListTag")
+fun List<Long>.toListTag() = map(Long::toTag).toTag()
+
+fun <T : Tag> List<T>.toTag() = ListTag(this)
+
+@JvmName("booleanListToTag")
+fun List<Boolean>.toTag() = map(Boolean::toTag).toTag()
+
+@JvmName("shortListToTag")
+fun List<Short>.toTag() = map(Short::toTag).toTag()
+
+@JvmName("floatListToTag")
+fun List<Float>.toTag() = map(Float::toTag).toTag()
+
+@JvmName("doubleListToTag")
+fun List<Double>.toTag() = map(Double::toTag).toTag()
+
+@JvmName("stringListToTag")
+fun List<String>.toTag() = map(String::toTag).toTag()
