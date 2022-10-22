@@ -67,7 +67,7 @@ private fun <T : Number> CompositeEncoder.encodeVector(
 }
 
 @ExperimentalSerializationApi
-object Vec3iSerializer : SilkSerializer<Vec3i>() {
+object Vec3iSerializer : SilkSerializer<Vec3i>(Vec3i::class) {
     private val serializer = Int.serializer()
 
     override val descriptor = descriptor(serializer)
@@ -80,7 +80,7 @@ object Vec3iSerializer : SilkSerializer<Vec3i>() {
 }
 
 @ExperimentalSerializationApi
-object Vector3fSerializer : SilkSerializer<Vector3f>() {
+object Vector3fSerializer : SilkSerializer<Vector3f>(Vector3f::class) {
     private val serializer = Float.serializer()
 
     override val descriptor = descriptor(serializer)
@@ -93,7 +93,7 @@ object Vector3fSerializer : SilkSerializer<Vector3f>() {
 }
 
 @ExperimentalSerializationApi
-object Vector3dSerializer : SilkSerializer<Vector3d>() {
+object Vector3dSerializer : SilkSerializer<Vector3d>(Vector3d::class) {
     private val serializer = Double.serializer()
 
     override val descriptor = descriptor(serializer)

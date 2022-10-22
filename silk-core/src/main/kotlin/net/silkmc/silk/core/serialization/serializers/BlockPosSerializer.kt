@@ -13,7 +13,7 @@ import net.silkmc.silk.core.serialization.SilkSerializer
  * Use vector serializers for structure. [BlockPos] is a [Vec3i]
  */
 @ExperimentalSerializationApi
-object BlockPosSerializer : SilkSerializer<BlockPos>() {
+object BlockPosSerializer : SilkSerializer<BlockPos>(BlockPos::class) {
     override val descriptor = PrimitiveSerialDescriptor(descriptorName, PrimitiveKind.LONG)
 
     override fun deserialize(decoder: Decoder) = BlockPos.of(decoder.decodeLong())!!
